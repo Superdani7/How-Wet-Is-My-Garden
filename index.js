@@ -1,29 +1,46 @@
 const express = require('express');
 const mongooose = require('mongoose');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-require('dotenv').config({path:'./variables.env'});
-require('./Models/Devise');
 const app = express();
+const bodyParser = require('body-parser');
 
+require('dotenv').config({ path: './variables.env'});
 
 mongooose.connect(process.env.DATABASE);
 mongooose.connection.on('error', function(error){
-    console.log('Database error', error);
+    console.log('Error de mongoose', error);
 });
 
-app.use(bodyParser());
-app.use(cors());
 
+require('./Schemas/persona');
+const modelopersona = mongooose.model('persona');
 
-app.get('/',function(req,res){
-    res.send('It works');
+app.get('/', function(req,res){
+    res.send('http://localhost:2000/nueva-persona')
 });
 
-const routes = require('./Routes/routes');
+app.get('/nueva-persona', function(req,res){
+    const mipersona = new modelopersona({
+        name:'Daniel',
+        username:'Big_Iron',
+        email:'Daniel@example.com',
+        pasword:'794613',
+        age: 41
+    });
+    mipersona.save().then(function(){
+        res.send('persona guardada');
+    });
+});
 
-app.use('/', routes);
 
-app.listen(process.env.PORT, function(){
-    console.log('App listening on port', process.env.PORT);
+app.listen(2000,function(){
+    console.log('Aplication escuchando en http:/localhost:2000');
+});
+
+app.get('/personas/Daniel', function(req,res){
+    const search = {
+        username: req.query.name
+    };
+    modelopersona.find(search).then(function(users){
+        res.send(users);
+    });
 });
