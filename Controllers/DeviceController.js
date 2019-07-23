@@ -39,7 +39,7 @@ module.exports.getDeviceById = function(req,res){
     });
 };
 module.exports.updateDevice = function(req,res){
-    const deviceId = req.body.deviceIdç;
+    const deviceId = req.body.deviceId;
     const newStatus = req.body.status;
 
     DeviceModel.findByIdAndUpdate(deviceId, {status:newStatus}).then(function(device){
