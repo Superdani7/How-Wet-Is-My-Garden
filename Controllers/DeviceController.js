@@ -41,6 +41,8 @@ module.exports.getDeviceById = function(req,res){
 module.exports.updateDevice = function(req,res){
     const deviceId = req.body.deviceId;
     const newStatus = req.body.status;
+    console.log(deviceId);
+    console.log(newStatus);
 
     DeviceModel.findByIdAndUpdate(deviceId, {status:newStatus}).then(function(device){
         if(device){
