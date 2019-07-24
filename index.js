@@ -14,9 +14,7 @@ mongooose.connection.on('error', function(error){
     console.log('Database error', error);
 });
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
-
+app.use(bodyParser());
 app.use(cors());
 
 
